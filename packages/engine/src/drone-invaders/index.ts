@@ -32,4 +32,5 @@ export * from './features/extractors';
 export * from './features/interpretation';
 export * from './generation/sectorSeed';
 export * from './policy/evaluatePolicy';
+export * from './policy/safePath';
 export * from './world/snapshot';

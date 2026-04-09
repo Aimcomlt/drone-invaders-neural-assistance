@@ -73,6 +73,7 @@ export type DroneInterpretation = {
 export type DronePolicyDecision = {
   allowHazardSpawn: boolean;
   allowInvasionEvent: boolean;
+  hasSafePath: boolean;
   clampedRisk: number;
   reasons: string[];
 };

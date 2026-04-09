@@ -19,6 +19,10 @@ export const generateAdvisorySignals = (
     signals.push('POLICY HOLD: invasion escalation currently blocked.');
   }
 
+  if (!policy.hasSafePath) {
+    signals.push('POLICY HOLD: no safe extraction path available.');
+  }
+
   if (signals.length === 0) {
     signals.push('STATUS STABLE: maintain extraction and fortification balance.');
   }

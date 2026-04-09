@@ -1,4 +1,5 @@
 import { DroneInterpretation, DronePolicyDecision, DroneWorldSignal } from '@pacman/shared';
+import { hasAnySafeResourcePath } from './safePath';
 
 export type PolicyThresholds = {
   maxHazardCoverage: number;
@@ -29,12 +30,17 @@ export const evaluatePolicy = (
     reasons.push('hazard coverage exceeded max threshold');
   }
 
+  const hasSafePath = hasAnySafeResourcePath(world);
+  if (!hasSafePath) {
+    reasons.push('no safe path available');
+  }
+
   const clampedRisk = clampUnit(
     Math.min(interpretation.riskAssessment.sectorRisk, thresholds.maxRiskBeforeInvasionClamp),
   );
 
   const allowInvasionEvent =
-    clampedRisk >= 0.35 && world.run.resourcesBanked >= thresholds.minResourcesForInvasion;
+    hasSafePath && clampedRisk >= 0.35 && world.run.resourcesBanked >= thresholds.minResourcesForInvasion;
   if (!allowInvasionEvent) {
     reasons.push('invasion gated by risk clamp or resources');
   }
@@ -42,6 +48,7 @@ export const evaluatePolicy = (
   return {
     allowHazardSpawn,
     allowInvasionEvent,
+    hasSafePath,
     clampedRisk,
     reasons,
   };

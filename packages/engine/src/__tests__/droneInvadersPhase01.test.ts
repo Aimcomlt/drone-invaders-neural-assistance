@@ -1,5 +1,12 @@
 import { DroneWorldSignal } from '@pacman/shared';
-import { tickDroneInvaders, createTickWorld, interpretWorld, evaluatePolicy, createExecutionPlan } from '..';
+import {
+  tickDroneInvaders,
+  createTickWorld,
+  interpretWorld,
+  evaluatePolicy,
+  createExecutionPlan,
+  hasAnySafeResourcePath,
+} from '..';
 
 const createWorld = (overrides: Partial<DroneWorldSignal> = {}): DroneWorldSignal => ({
   sector: {
@@ -114,5 +121,58 @@ describe('Drone-Invaders Phase 0.1 deterministic checks', () => {
 
     expect(world.entities[0].position.x).toBe(4);
     expect(world.conway.aliveCells[0].x).toBe(1);
+  });
+
+  test('policy blocks invasion when no safe path exists to any resource', () => {
+    const blockedWorld = createWorld({
+      sector: {
+        id: 'sector-a',
+        width: 10,
+        height: 10,
+        blockedCells: Array.from({ length: 10 }, (_, x) => ({ x, y: 5 })),
+      },
+      resources: [
+        {
+          id: 'resource-1',
+          position: { x: 2, y: 8 },
+          richness: 0.9,
+          contested: false,
+        },
+      ],
+      run: {
+        timestampMs: 1000,
+        resourcesBanked: 100,
+        currentSectorId: 'sector-a',
+        threatLevel: 0.7,
+        activeObjectives: ['extract-resource-1'],
+      },
+    });
+
+    expect(hasAnySafeResourcePath(blockedWorld)).toBe(false);
+
+    const output = tickDroneInvaders({ deltaMs: 16, world: blockedWorld });
+
+    expect(output.policy.hasSafePath).toBe(false);
+    expect(output.policy.allowInvasionEvent).toBe(false);
+    expect(output.policy.reasons).toContain('no safe path available');
+    expect(output.execution.advisorySignals).toContain('POLICY HOLD: no safe extraction path available.');
+  });
+
+  test('safe path check succeeds when at least one resource route is open', () => {
+    const traversableWorld = createWorld({
+      sector: {
+        id: 'sector-a',
+        width: 10,
+        height: 10,
+        blockedCells: Array.from({ length: 10 }, (_, x) => ({ x, y: 5 })).filter((cell) => cell.x !== 4),
+      },
+    });
+
+    expect(hasAnySafeResourcePath(traversableWorld)).toBe(true);
+
+    const interpretation = interpretWorld(traversableWorld);
+    const policy = evaluatePolicy(traversableWorld, interpretation);
+
+    expect(policy.hasSafePath).toBe(true);
   });
 });
