@@ -1,76 +1,54 @@
-# Pac-Man Tilt Game Monorepo Architecture
+# Drone-Invaders Transition Architecture (First Pass)
 
-This blueprint lays out a Yarn/NPM workspaces monorepo for a Pac-Man Tilt Game that can target React Native or React PWA. The goal is to keep the gameplay engine pure TypeScript, drive runtime configuration with JSON assets, and render through a canvas-oriented UI while Redux manages game/session state.
+This repository originally shipped as a Pac-Man tilt prototype. In this first-pass transition, we are **archiving the Pac-Man implementation** and treating it as a legacy baseline while we prepare the Drone-Invaders architecture described in `AGENT.md` and `execplan.md`.
 
-## Workspace Layout
+## Transition Status
+
+- **Status:** Pac-Man tilt stack archived (legacy reference only).
+- **Current coding focus:** new Drone-Invaders systems with deterministic core + neural assistant modules.
+- **Scope of this pass:** documentation and repository intent reset, not a full gameplay rewrite.
+
+## Legacy Stack (Archived)
+
+The current workspace layout remains intact for now so we can preserve prior implementation details:
 
 ```
 packages/
-  app/                # React Native / React PWA app shell (canvas renderer + UI)
-  engine/             # Pure TypeScript gameplay engine (platform-agnostic)
-  shared/             # Cross-package types and utilities
-  assets/             # JSON maps, sprite atlases, rules, and palette metadata
+  app/      # Legacy Pac-Man tilt UI shell (archived)
+  engine/   # Legacy deterministic gameplay engine (archived)
+  shared/   # Shared types/utilities (candidate for reuse)
+  assets/   # Legacy Pac-Man maps/rules/sprites (archived)
 ```
 
-Root `package.json` defines the workspaces so each package can be built/tested independently while sharing the same lockfile. CI can run `npm run lint --workspaces`, `npm run test --workspaces`, etc.
+Archived means:
+- bug fixes only if needed to keep repository integrity,
+- no new feature work for Pac-Man-specific gameplay,
+- all forward-looking systems should align to Drone-Invaders architecture.
 
-## Data Flow and Responsibilities
+## Target Architecture Direction (Drone-Invaders)
 
-* **App (React UI + Redux):**
-  * Owns Redux slices for session, settings, tilt calibration, and engine bridge.
-  * Hosts the canvas renderer component that consumes the engine's draw commands.
-  * Subscribes to device tilt/acceleration sensors and dispatches normalized tilt vectors to Redux.
-  * Dispatches input actions (tilt, pause, restart) and receives frame snapshots from the engine via an event bridge.
-* **Engine (Pure TS):**
-  * Initializes with JSON assets resolved by the app and validated by shared schemas.
-  * Exposes an imperative API (`EngineHost`) for tick/start/stop, and emits render batches and HUD stats.
-  * Contains deterministic systems for movement, collisions, scoring, ghost AI, and pellet state.
-  * Never touches DOM/React; all IO comes from injected callbacks and data structures.
-* **Shared:**
-  * Type definitions for entities, map layout, sprite metadata, events, and render commands.
-  * Pure helpers for vector math, RNG, and schema validation (e.g., `zod`/`io-ts`).
-* **Assets:**
-  * JSON driven so level designers can change maps, rules, or sprites without code changes.
-  * Each asset file declares a version and checksum to allow runtime validation.
+Per `execplan.md`, gameplay systems should converge on the following layering:
 
-## Cross-Package Contracts
+1. **World Signal Layer** — raw map, entities, run state, Conway state.
+2. **Interpretation Layer** — feature extraction, motif detection, neural scoring.
+3. **Policy Layer** — fairness/legality checks and clamps.
+4. **Execution Layer** — spawns, hazards, resources, assistant advice, overlays.
 
-Communication stays type-safe through `packages/shared` types and events:
+### Deterministic vs Neural Responsibilities
 
-* **Inputs:** `TiltInput`, `ButtonInput`, and `DebugInput` events are dispatched from Redux thunks to the engine.
-* **Outputs:** Engine emits `RenderBatch` (drawable instructions for the canvas), `ScoreBoard` stats, and `SoundCue` events back to the app.
-* **State:** Redux keeps minimal derived state (UI status, calibration, current level id) and stores the latest engine snapshot for time travel/debug.
+- Keep deterministic systems responsible for collision, pathfinding, legality, progression, and economy math.
+- Keep neural systems narrow and assistive (classification, scoring, pressure/risk estimation, recommendation ranking).
+- Route all gameplay-affecting outputs through policy checks before execution.
 
-## Rendering Pipeline
+## First-Pass Repository Rules
 
-1. `CanvasRenderer` React component subscribes to `renderFrame` slice and paints draw calls (tiles, sprites, overlays) onto an HTML5 Canvas or React Native Skia surface.
-2. `EngineHost` produces `RenderBatch` per tick. Batches include camera offset, tile layers, sprite quads, and HUD overlays, staying platform-agnostic.
-3. UI overlays (pause menu, settings) remain in the React tree, separate from canvas rendering.
+- Preserve legacy behavior unless explicitly removing/replacing archived systems.
+- New modules should be named by role (e.g. `policy/`, `assistant/`, `conway/`, `features/`).
+- Avoid direct model calls in gameplay code; always use adapter interfaces.
+- Require deterministic fallback behavior for every neural output.
 
-## Sensor Pipeline
+## Next Steps
 
-1. `useTilt` hook wraps the platform sensor API (`DeviceOrientationEvent` on web or `expo-sensors` on Native).
-2. Hook normalizes raw gravity vectors, applies calibration offsets from Redux, throttles to the engine tick rate, and dispatches `tiltSlice` actions.
-3. A thunk (`pushTiltToEngine`) forwards normalized tilt to the engine host.
-
-## Redux Slices (packages/app)
-
-* `gameSlice`: run/pause state, current level, score summary, and engine readiness.
-* `renderSlice`: latest `RenderBatch` from the engine.
-* `tiltSlice`: raw sensor readings, calibration offsets, and normalized vector.
-* `settingsSlice`: audio, haptics, difficulty, and accessibility preferences.
-
-## Boot Flow
-
-1. App boots and loads JSON assets from `packages/assets` (or remote CDN) via `AssetsLoader`.
-2. Assets pass through `shared` validators and are injected into `engine.createEngine` along with Redux dispatch callbacks.
-3. `EngineHost.start()` kicks off the game loop (`requestAnimationFrame` or `setInterval` with fallback), pushing render batches into Redux.
-4. UI components subscribe to slices to show HUD, debug overlays, and settings.
-
-## Testing Strategy
-
-* Unit-test engine systems with deterministic fixtures and snapshot render batches.
-* Integration-test Redux + hooks with React Testing Library and mocked sensors.
-* Contract-test asset JSON via schemas to prevent malformed levels.
-
-This blueprint is intentionally verbose to serve as a reference for contributors adding features or ports.
+- Add a dedicated `docs/ARCHIVE_PACMAN_TILT.md` inventory and freeze boundaries.
+- Introduce Phase 0 Drone-Invaders scaffolding modules alongside archived code.
+- Begin policy engine scaffolding before integrating any neural model.
