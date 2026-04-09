@@ -59,20 +59,19 @@ This project is not trying to be:
 - an “AI for its own sake” tech demo
 
 ## Current Milestone
-**Milestone Name:**  
-**Milestone Goal:**  
-**Build Version:**  
-**Target Date:**  
+**Milestone Name:** Phase 0 — Drone-Invaders Scaffold
+**Milestone Goal:** Establish deterministic world/interpretation/policy/execution scaffolding with assistant-ready interfaces.
+**Build Version:** 0.2.0-alpha.0
+**Target Date:** May 8, 2026
 
 ## Success Criteria for Current Milestone
-Fill these with specific measurable checks.
 
 ### Required
-- Ship movement feels responsive and distinct
-- Core fight/extract/fortify/expand loop is playable end-to-end
-- Hazard generation is valid and readable
-- Policy layer prevents unfair map states
-- Assistant outputs are useful and non-blocking
+- Deterministic tick scaffolding exists for world -> interpretation -> policy -> execution and is covered by automated tests.
+- Hazard placement is blocked when Conway candidate coverage exceeds configured policy cap.
+- Invasion events are blocked when resources are below policy thresholds, and execution output reflects the block.
+- Assistant advisories always provide at least one non-blocking signal message.
+- Snapshot cloning protects input world state from mutation side effects during tick composition.
 
 ### Stretch
 - Conway-driven hazard interpretation is working

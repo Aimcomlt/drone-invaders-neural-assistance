@@ -7,7 +7,7 @@
     "build": "tsc -p . --emitDeclarationOnly false",
     "typecheck": "tsc -p . --noEmit",
     "lint": "eslint src",
-    "test": "echo 'Pac-Man engine tests removed in cleanup pass'"
+    "test": "jest -c jest.config.js --runInBand"
   },
   "dependencies": {
     "@pacman/shared": "0.1.0"
