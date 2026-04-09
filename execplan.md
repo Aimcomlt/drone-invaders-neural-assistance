@@ -59,10 +59,10 @@ This project is not trying to be:
 - an “AI for its own sake” tech demo
 
 ## Current Milestone
-**Milestone Name:**  
-**Milestone Goal:**  
-**Build Version:**  
-**Target Date:**  
+**Milestone Name:** Phase 0 — Drone-Invaders Scaffold
+**Milestone Goal:** Establish deterministic world/interpretation/policy/execution scaffolding with assistant-ready interfaces.
+**Build Version:** 0.2.0-alpha.0
+**Target Date:** May 8, 2026
 
 ## Success Criteria for Current Milestone
 Fill these with specific measurable checks.
