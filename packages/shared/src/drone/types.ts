@@ -249,6 +249,15 @@ export type DronePlaytestReview = {
   recommendations: string[];
 };
 
+export type DroneStrategicFocus = 'fight' | 'extract' | 'fortify' | 'expand';
+
+export type DronePhase7Briefing = {
+  readinessScore: number;
+  recommendedFocus: DroneStrategicFocus;
+  riskTrend: 'rising' | 'stable' | 'falling';
+  summary: string[];
+};
+
 export type DroneTelemetrySnapshot = {
   timestampMs: number;
   clampedRisk: number;
@@ -279,4 +288,5 @@ export type DroneTickOutput = {
   execution: DroneExecutionPlan;
   telemetry: DroneTelemetrySnapshot;
   playtestReview: DronePlaytestReview;
+  phase7Briefing: DronePhase7Briefing;
 };

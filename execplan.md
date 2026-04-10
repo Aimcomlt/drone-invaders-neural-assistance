@@ -614,6 +614,38 @@ Exit criteria:
 - memorable moments increase
 - frustration sources are known and shrinking
 
+## Phase 7 — Strategic Briefing and Macro Guidance
+Goal:
+Convert per-tick telemetry and policy state into explicit fight/extract/fortify/expand focus guidance for the next decision window.
+
+Status note (April 10, 2026):
+- completed in code with readiness scoring, risk trend labeling, and policy-aware focus recommendation output in tick results.
+
+Deliverables:
+- per-tick readiness score (0..1)
+- recommended strategic focus (fight/extract/fortify/expand)
+- risk trend label for near-term pressure interpretation
+- concise summary cues that can be surfaced in assistant UX
+
+Exit criteria:
+- every tick includes bounded strategic guidance output
+- guidance never bypasses policy constraints
+- high-pressure or low-recovery states bias recommendations toward stabilization
+
+## Phases to Come
+
+### Phase 8 — Sector Progression and Unlock Economy
+Goal:
+Tie tactical success into explicit sector unlock choices, resource spend priorities, and recoverable progression pacing.
+
+### Phase 9 — Content Variety and Event Deck Expansion
+Goal:
+Increase replay variety through curated hazard/event combinations that remain readable and policy-safe.
+
+### Phase 10 — Release Hardening and Observability
+Goal:
+Finalize balancing, telemetry review tooling, regression coverage, and release-gate quality bars.
+
 ---
 
 # Part 8 — Testing, Telemetry, and Playtest Pipeline
