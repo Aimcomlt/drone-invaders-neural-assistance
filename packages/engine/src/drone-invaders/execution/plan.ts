@@ -12,9 +12,7 @@ export const createExecutionPlan = (
     ? world.conway.aliveCells.slice(0, MAX_HAZARD_SPAWNS_PER_TICK)
     : [];
 
-  const invasionWaveSize = policy.allowInvasionEvent
-    ? Math.max(1, Math.round(interpretation.riskAssessment.sectorRisk * 10))
-    : 0;
+  const invasionWaveSize = policy.allowInvasionEvent ? policy.clampedInvasionWaveSize : 0;
 
   return {
     hazardPlacements,

@@ -55,14 +55,22 @@ const hasPath = (world: DroneWorldSignal, start: DroneVector2, target: DroneVect
   return false;
 };
 
-export const hasAnySafeResourcePath = (world: DroneWorldSignal): boolean => {
+export const countReachableResources = (world: DroneWorldSignal): number => {
   const playerShip = world.entities.find((entity) => entity.kind === 'player-ship' && entity.active);
 
   if (!playerShip || world.resources.length === 0) {
-    return true;
+    return world.resources.length;
   }
 
   const blocked = new Set(world.sector.blockedCells.map(toCellKey));
 
-  return world.resources.some((resource) => hasPath(world, playerShip.position, resource.position, blocked));
+  return world.resources.filter((resource) => hasPath(world, playerShip.position, resource.position, blocked)).length;
+};
+
+export const hasAnySafeResourcePath = (world: DroneWorldSignal): boolean => {
+  if (world.resources.length === 0) {
+    return true;
+  }
+
+  return countReachableResources(world) > 0;
 };
