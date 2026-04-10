@@ -75,6 +75,7 @@ export type DronePolicyDecision = {
   allowInvasionEvent: boolean;
   hasSafePath: boolean;
   clampedRisk: number;
+  clampedInvasionWaveSize: number;
   reasons: string[];
   reasonCodes: DronePolicyReasonCode[];
   policyLog: DronePolicyLog;
@@ -83,6 +84,7 @@ export type DronePolicyDecision = {
 export type DronePolicyReasonCode =
   | 'hazard_coverage_exceeded'
   | 'no_safe_path'
+  | 'resource_accessibility_below_min'
   | 'risk_below_min'
   | 'resources_below_min';
 
@@ -97,16 +99,22 @@ export type DronePolicyLog = {
     clampedRisk: number;
     resourcesBanked: number;
     hasSafePath: boolean;
+    reachableResourceCount: number;
+    totalResourceCount: number;
+    reachableResourceRatio: number;
   };
   thresholds: {
     maxHazardCoverage: number;
     maxRiskBeforeInvasionClamp: number;
     minRiskForInvasion: number;
     minResourcesForInvasion: number;
+    minReachableResourceRatio: number;
+    maxInvasionWaveSize: number;
   };
   decision: {
     allowHazardSpawn: boolean;
     allowInvasionEvent: boolean;
+    clampedInvasionWaveSize: number;
   };
   reasons: DronePolicyLogReason[];
 };

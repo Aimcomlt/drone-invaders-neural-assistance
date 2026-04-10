@@ -505,6 +505,9 @@ Exit criteria:
 Goal:
 Create hard constraints before adding learned interpretation.
 
+Status note (April 10, 2026):
+- completed in code with safe-path validation, hazard coverage gating, invasion event clamping, resource accessibility ratio checks, and structured policy logging.
+
 Deliverables:
 - safe-path validation
 - hazard coverage rules
