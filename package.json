@@ -12,6 +12,7 @@
     "ci": "npm run lint --if-present --workspaces && npm run typecheck --if-present --workspaces && npm run build --if-present --workspaces"
   },
   "devDependencies": {
+    "eslint": "^8.56.0"
     "typescript": "^5.4.5"
   }
 }
