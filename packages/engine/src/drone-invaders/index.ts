@@ -45,3 +45,6 @@ export * from './generation/candidates';
 export * from './policy/evaluatePolicy';
 export * from './policy/safePath';
 export * from './world/snapshot';
+export * from './features/riskModel';
+export * from './models/conwayInterpreter';
+export * from './models/loggedRiskModel';

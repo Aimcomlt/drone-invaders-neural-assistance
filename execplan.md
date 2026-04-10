@@ -558,6 +558,9 @@ Exit criteria:
 Goal:
 Integrate a single narrow model behind a stable interface.
 
+Status note (April 10, 2026):
+- in progress in code with a Conway Interpreter adapter, normalized risk-model input pipeline, deterministic fallback comparison diagnostics, and model input/output logging wrappers.
+
 Recommended first model:
 - Conway Interpreter or Map Surveyor
 

@@ -111,10 +111,28 @@ export type DroneRiskAssessment = {
   source: 'deterministic-fallback' | 'assistant-model';
 };
 
+
+export type DroneRiskModelInput = {
+  aliveDensity: number;
+  frontierPressure: number;
+  hazardRegionDensity: number;
+  resourceRegionDensity: number;
+  oscillatorRatio: number;
+  stableClusterRatio: number;
+};
+
+export type DroneRiskModelDiagnostics = {
+  normalizedInput: DroneRiskModelInput;
+  fallbackAssessment: DroneRiskAssessment;
+  modelAssessment?: DroneRiskAssessment;
+  selectedSource: DroneRiskAssessment['source'];
+  sectorRiskDelta: number;
+};
 export type DroneInterpretation = {
   patternFeatures: DronePatternFeatures;
   riskAssessment: DroneRiskAssessment;
   conwayAnalysis: DroneConwayAnalysis;
+  riskDiagnostics: DroneRiskModelDiagnostics;
 };
 
 export type DronePolicyDecision = {
