@@ -1,0 +1,74 @@
+.forge-preview-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 360px;
+  gap: 16px;
+  padding: 16px;
+}
+
+.forge-card {
+  background: #121826;
+  border: 1px solid #263249;
+  border-radius: 8px;
+  padding: 14px;
+  color: #dce6ff;
+}
+
+.forge-preview-main p {
+  color: #a8b7d9;
+}
+
+.forge-preview-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.audio-debug-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.audio-debug-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.audio-debug-panel input[type="range"],
+.audio-debug-panel select {
+  width: 100%;
+}
+
+.audio-debug-note {
+  color: #95a5c9;
+  margin: 0;
+  font-size: 12px;
+}
+
+.audio-checkbox {
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.audio-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+
+.audio-actions button {
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1px solid #36496b;
+  background: #1a2438;
+  color: #dce6ff;
+  cursor: pointer;
+}
+
+.audio-plan {
+  font-size: 12px;
+  color: #b8c6e6;
+  line-height: 1.5;
+}
