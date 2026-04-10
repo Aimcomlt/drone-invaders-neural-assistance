@@ -580,6 +580,9 @@ Exit criteria:
 Goal:
 Expand assistant capability carefully.
 
+Status note (April 10, 2026):
+- in progress in code with bounded module signals for Conway Interpreter, Map Surveyor, Threat Forecaster, Resource Assessor, and Recovery Advisor, plus priority-based assistant advisory synthesis.
+
 Potential sequence:
 1. Conway Interpreter
 2. Map Surveyor
