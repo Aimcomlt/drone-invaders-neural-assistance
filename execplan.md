@@ -601,7 +601,7 @@ Goal:
 Use real play to refine pacing, advice, and fairness.
 
 Status note (April 10, 2026):
-- in progress in code with tick-level telemetry snapshots, playtest feedback review summaries, assistant confidence/frequency tuning controls, and hazard-pressure rebalance knobs.
+- completed in code with tick-level telemetry snapshots, structured playtest feedback review summaries, assistant confidence/frequency tuning controls, and hazard-pressure rebalance knobs routed through execution outputs.
 
 Deliverables:
 - telemetry or structured logging
