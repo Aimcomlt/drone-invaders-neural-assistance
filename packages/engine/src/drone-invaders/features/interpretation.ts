@@ -4,7 +4,7 @@ import {
   DroneRiskAssessment,
   DroneWorldSignal,
 } from '@pacman/shared';
-import { extractPatternFeatures } from './extractors';
+import { analyzeConwayState, extractPatternFeatures } from './extractors';
 
 export type RiskModelAdapter = {
   evaluateSectorRisk: (world: DroneWorldSignal, features: DronePatternFeatures) => DroneRiskAssessment;
@@ -27,11 +27,13 @@ export const interpretWorld = (
   world: DroneWorldSignal,
   riskModel: RiskModelAdapter = deterministicRiskFallback,
 ): DroneInterpretation => {
-  const patternFeatures = extractPatternFeatures(world);
+  const conwayAnalysis = analyzeConwayState(world);
+  const patternFeatures = extractPatternFeatures(world, conwayAnalysis);
   const riskAssessment = riskModel.evaluateSectorRisk(world, patternFeatures);
 
   return {
     patternFeatures,
     riskAssessment,
+    conwayAnalysis,
   };
 };

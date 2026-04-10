@@ -8,8 +8,9 @@ export const createExecutionPlan = (
   interpretation: DroneInterpretation,
   policy: DronePolicyDecision,
 ): DroneExecutionPlan => {
+  const hazardCandidateCells = interpretation.conwayAnalysis.candidates.hazardRegions.flatMap((region) => region.cells);
   const hazardPlacements = policy.allowHazardSpawn
-    ? world.conway.aliveCells.slice(0, MAX_HAZARD_SPAWNS_PER_TICK)
+    ? (hazardCandidateCells.length > 0 ? hazardCandidateCells : world.conway.aliveCells).slice(0, MAX_HAZARD_SPAWNS_PER_TICK)
     : [];
 
   const invasionWaveSize = policy.allowInvasionEvent ? policy.clampedInvasionWaveSize : 0;

@@ -44,6 +44,49 @@ export type DroneConwayState = {
   aliveCells: DroneVector2[];
 };
 
+export type DroneConwayConfig = {
+  width: number;
+  height: number;
+  birthRules: number[];
+  survivalRules: number[];
+  wrapEdges: boolean;
+  stepsPerTick: number;
+};
+
+export type DroneConwayMotifKind = 'stable-cluster' | 'oscillator' | 'glider-candidate' | 'chaotic-zone';
+
+export type DroneConwayMotif = {
+  kind: DroneConwayMotifKind;
+  anchor: DroneVector2;
+  cellCount: number;
+  confidence: number;
+};
+
+export type DroneConwayMotifReport = {
+  motifs: DroneConwayMotif[];
+  counts: Record<DroneConwayMotifKind, number>;
+};
+
+export type DroneGameplayCandidateRegionKind = 'hazard' | 'resource';
+
+export type DroneGameplayCandidateRegion = {
+  id: string;
+  kind: DroneGameplayCandidateRegionKind;
+  cells: DroneVector2[];
+  centroid: DroneVector2;
+  score: number;
+};
+
+export type DroneConwayCandidates = {
+  hazardRegions: DroneGameplayCandidateRegion[];
+  resourceRegions: DroneGameplayCandidateRegion[];
+};
+
+export type DroneConwayAnalysis = {
+  motifReport: DroneConwayMotifReport;
+  candidates: DroneConwayCandidates;
+};
+
 export type DroneWorldSignal = {
   sector: DroneSectorGrid;
   entities: DroneEntity[];
@@ -56,6 +99,9 @@ export type DronePatternFeatures = {
   aliveDensity: number;
   frontierPressure: number;
   hazardCandidateCells: number;
+  motifCounts: Record<DroneConwayMotifKind, number>;
+  hazardRegionCount: number;
+  resourceRegionCount: number;
 };
 
 export type DroneRiskAssessment = {
@@ -68,6 +114,7 @@ export type DroneRiskAssessment = {
 export type DroneInterpretation = {
   patternFeatures: DronePatternFeatures;
   riskAssessment: DroneRiskAssessment;
+  conwayAnalysis: DroneConwayAnalysis;
 };
 
 export type DronePolicyDecision = {

@@ -523,6 +523,9 @@ Exit criteria:
 Goal:
 Use Conway as a spatial pattern source.
 
+Status note (April 10, 2026):
+- in progress in code with configurable Conway stepping, motif-detection scaffolding, Conway feature extraction, and gameplay candidate region generation hooks wired into interpretation and execution planning.
+
 Deliverables:
 - configurable Conway simulation
 - motif detection scaffolding
