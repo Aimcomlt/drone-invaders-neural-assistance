@@ -216,10 +216,55 @@ export type DroneAssistantUiScaffold = {
   debug: DroneAssistantDebugToggles;
 };
 
+
+export type DroneAssistantSignalCategory = 'conway' | 'survey' | 'threat' | 'resource' | 'recovery';
+
+export type DroneAssistantAdvisorySignal = {
+  id: string;
+  category: DroneAssistantSignalCategory;
+  message: string;
+  priority: number;
+  confidence: number;
+};
+
+export type DroneAssistantTuningConfig = {
+  minConfidenceToBroadcast: number;
+  maxSignalsPerTick: number;
+  duplicateWindowTicks: number;
+  hazardBalanceBias: number;
+};
+
+export type DronePlaytestFeedback = {
+  confusionEvents: number;
+  excitingEvents: number;
+  frustrationEvents: number;
+  ignoredAdviceEvents: number;
+};
+
+export type DronePlaytestReview = {
+  confusionRate: number;
+  excitementRate: number;
+  frustrationRate: number;
+  ignoredAdviceRate: number;
+  recommendations: string[];
+};
+
+export type DroneTelemetrySnapshot = {
+  timestampMs: number;
+  clampedRisk: number;
+  hazardPlacementCount: number;
+  invasionWaveSize: number;
+  advisorySignalsEmitted: number;
+  advisorySignalsSuppressed: number;
+  hazardCoverage: number;
+  policyReasons: DronePolicyReasonCode[];
+};
+
 export type DroneExecutionPlan = {
   hazardPlacements: DroneVector2[];
   invasionWaveSize: number;
   advisorySignals: string[];
+  advisorySignalDetails: DroneAssistantAdvisorySignal[];
   assistantUi: DroneAssistantUiScaffold;
 };
 
@@ -232,4 +277,6 @@ export type DroneTickOutput = {
   interpretation: DroneInterpretation;
   policy: DronePolicyDecision;
   execution: DroneExecutionPlan;
+  telemetry: DroneTelemetrySnapshot;
+  playtestReview: DronePlaytestReview;
 };

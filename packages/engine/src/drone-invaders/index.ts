@@ -1,7 +1,7 @@
-import { DroneConwayConfig, DroneTickInput, DroneTickOutput } from '@pacman/shared';
+import { DroneAssistantTuningConfig, DroneConwayConfig, DronePlaytestFeedback, DroneTickInput, DroneTickOutput } from '@pacman/shared';
 import { interpretWorld, RiskModelAdapter } from './features/interpretation';
 import { evaluatePolicy, PolicyThresholds } from './policy/evaluatePolicy';
-import { createExecutionPlan } from './execution/plan';
+import { createExecutionArtifacts } from './execution/plan';
 import { createTickWorld } from './world/snapshot';
 import { stepConway } from './conway/step';
 
@@ -9,6 +9,8 @@ export type DroneTickDependencies = {
   riskModel?: RiskModelAdapter;
   policyThresholds?: PolicyThresholds;
   conwayConfig?: Partial<DroneConwayConfig>;
+  assistantTuning?: Partial<DroneAssistantTuningConfig>;
+  playtestFeedback?: DronePlaytestFeedback;
 };
 
 export const tickDroneInvaders = (
@@ -24,12 +26,17 @@ export const tickDroneInvaders = (
 
   const interpretation = interpretWorld(world, dependencies.riskModel);
   const policy = evaluatePolicy(world, interpretation, dependencies.policyThresholds);
-  const execution = createExecutionPlan(world, interpretation, policy);
+  const executionPhase = createExecutionArtifacts(world, interpretation, policy, {
+    assistantTuning: dependencies.assistantTuning,
+    playtestFeedback: dependencies.playtestFeedback,
+  });
 
   return {
     interpretation,
     policy,
-    execution,
+    execution: executionPhase.execution,
+    telemetry: executionPhase.telemetry,
+    playtestReview: executionPhase.playtestReview,
   };
 };
 

@@ -600,6 +600,9 @@ Exit criteria:
 Goal:
 Use real play to refine pacing, advice, and fairness.
 
+Status note (April 10, 2026):
+- in progress in code with tick-level telemetry snapshots, playtest feedback review summaries, assistant confidence/frequency tuning controls, and hazard-pressure rebalance knobs.
+
 Deliverables:
 - telemetry or structured logging
 - playtest review loop
